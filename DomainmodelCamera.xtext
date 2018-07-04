@@ -1,0 +1,34 @@
+grammar org.xtext.example.duckie.Duckie with org.eclipse.xtext.common.Terminals
+
+generate duckie "http://www.xtext.org/example/duckie/Duckie"
+
+Domainmodel:
+    (elements+=Type)*;
+
+terminal I_D_SLASH: '^'?('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9'|'/')*;
+
+Type:
+	Flag|Relation|Category
+;
+
+// Flag camera/raw true *true $veh
+Flag:
+	'flag' name=I_D_SLASH (value=Bool)?
+;
+
+Bool:
+	'True'|'False'|'Null'
+;
+
+// Define the flags in a tree-like fashion
+Relation:
+	'rel' nameParent=STRING 'childs' (children+=Child)+
+;
+
+Child:
+	name=STRING
+;
+
+Category:
+	'cat' nameCat=STRING
+;
