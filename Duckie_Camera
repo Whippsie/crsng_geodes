@@ -1,0 +1,66 @@
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script type="text/javascript">
+    function readTextFile(file)
+    {
+    var rawFile = new XMLHttpRequest();
+    rawFile.open("GET", file, false);
+    rawFile.onreadystatechange = function ()
+    {
+        if(rawFile.readyState === 4)
+        {
+            if(rawFile.status === 200 || rawFile.status == 0)
+            {
+		alert('iminbaby');
+                var allText = rawFile.responseText;
+                alert(allText);
+            }
+        }
+    }
+    alert('didnt work');
+    rawFile.send(null);
+    } 
+        $(document).ready(function () {
+	   /* $.ajax({
+	      url: "Camera.java",
+	      data: "text",
+	      success: function (data) {
+			  alert(data)
+			};
+	      });*/
+        //readTextFile("Camera.java");
+        jQuery.get('Camera.java', function(data) {
+        alert('notsure');
+	alert(data);
+});
+               /* $.ajax({//enter code here
+                    url: "TextFile.txt",
+                    dataType: "text",
+                    success: function (data) {                 
+                            var text = $('#newCheckText').val();
+                            var str = data;
+                            var str_array = str.split('\n');
+                            for (var i = 0; i < str_array.length; i++) {
+                                // Trim the excess whitespace.*/
+                                //str_array[i] = str_array[i].replace(/^\s*/, "").replace(/\s*$/, "");
+                                /*alert(str_array[i]);
+                                $('#checkboxes').append('<input type="checkbox"  class="checkBoxClass" /> ' + str_array[i] + '<br />');
+                            }
+                    }                   
+                });
+                $("#ckbCheckAll").click(function () {
+                    $(".checkBoxClass").prop('checked', $(this).prop('checked'));
+                });
+                */
+        });
+    </script>
+</head>
+<body>
+    <div id="checkboxes">
+        <input type="checkbox" id="ckbCheckAll" class="checkBoxClass"/> Select All<br />        
+    </div>
+</body>
+</html>
