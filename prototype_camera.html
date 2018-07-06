@@ -3,11 +3,13 @@
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
+//TODO: Modify this into https://www.w3schools.com/tags/tag_fieldset.asp for better graphics
 function addRadioBool(name){
 	for (var i = 0; i< name.length ; i++){
 		var id = "radio_"+name[i];
-		$("body").append("<div id='"+id+"'>"+name[i]);
-		//Create 2 buttons for every category (T/F)
+		$("#mods").after("<div id='"+id+"'>"+name[i]);
+		$("#"+id).append("<br>");
+		//Create 2 buttons for every option (T/F)
 		for (var j = 0 ; j < 2 ; j++){
 			var radioInput = document.createElement('input');
 			var text = document.createElement('label');
@@ -16,16 +18,32 @@ function addRadioBool(name){
 			radioInput.setAttribute('name', name[i]); //Category
 			radioInput.setAttribute('id', name[i]+j);
 			radioInput.setAttribute('value', text.innerHTML);
-			//document.body.appendChild(radioInput);
-			$("#"+id).append(radioInput);
 			$("#"+id).append(text);
+			$("#"+id).append(radioInput);
 		}
-		$("#"+id).append("</div>");
+		$("#mods").after("</div>");
+		$("#mods").after("<br>");
 	}
+	$("#mods").after("<br>");
+	$("#confirm").before("<br>");
 }
+var dict = {"Camera":"/camera/"}
+
+function parseToROS(){
+	var ros = '<launch> \n \t <arg name="veh" default="$(env VEHICLE_NAME)"/> \n ';
+	//For demos, using a master file
+	ros += '\t <include file="$(find duckietown_demos)/launch/master.launch"> \n ';
+	$('input:radio:checked').each(function() {
+		ros += '\t \t <arg name="'+dict["Camera"]+jQuery(this).attr('name') + ' value="' + jQuery(this).attr('value')+'" /> \n';
+	});
+	ros += '\t </include>';
+	ros += '</launch>';
+	alert(ros);
+}
+
 $(document).ready(function(){
     $.ajax({
-                    url: "classe.java",
+                    url: "Camera.java",
                     dataType: "text",
                     success: function (data) {
 							var name = [];
@@ -34,8 +52,9 @@ $(document).ready(function(){
 							data = data.replace(/\t/g, ' ');
                             var res = data.split(" ");
 							for (var i = 0; i<res.length;i++){
-								//Hardcoded parser cause life is hard
+								//For now only checks variables
 								if (res[i] == "private"){
+									//For now only supports boolean type
 									if (res[i+1] == "boolean"){
 										name[j] = res[i+2];
 										j++;
@@ -51,6 +70,10 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-
+<h1> Prototype - Configuration Duckietown </h1>
+<select id="mods" name="modules">
+	<option value="Camera">Camera</option>
+</select>
+<button id="confirm" onclick="parseToROS()">Submit</button><br>
 </body>
 </html> 
