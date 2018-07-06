@@ -4,6 +4,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 //TODO: Modify this into https://www.w3schools.com/tags/tag_fieldset.asp for better graphics
+
 function addRadioBool(name){
 	for (var i = 0; i< name.length ; i++){
 		var id = "radio_"+name[i];
@@ -29,16 +30,72 @@ function addRadioBool(name){
 }
 var dict = {"Camera":"/camera/"}
 
-function parseToROS(){
+function parsetoROS(){
 	var ros = '<launch> \n \t <arg name="veh" default="$(env VEHICLE_NAME)"/> \n ';
 	//For demos, using a master file
 	ros += '\t <include file="$(find duckietown_demos)/launch/master.launch"> \n ';
 	$('input:radio:checked').each(function() {
-		ros += '\t \t <arg name="'+dict["Camera"]+jQuery(this).attr('name') + ' value="' + jQuery(this).attr('value')+'" /> \n';
+		ros += '\t \t <arg name="'+dict["Camera"]+jQuery(this).attr('name') + '" value="' + jQuery(this).attr('value')+'" /> \n';
 	});
 	ros += '\t </include>';
 	ros += '</launch>';
-	alert(ros);
+	//alert(ros);
+	console.log(ros);
+	writeTextFile("Camera.launch", ros);
+}
+function parsetoJava(){
+	//TODO: Take file and get the content
+	var temp = '<launch> \n \t <arg name="veh" default="$(env VEHICLE_NAME)"/> \n \t <include file="$(find duckietown_demos)/launch/master.launch"> \n \t \t <arg name="/camera/local" value="True" /> \n \t \t <arg name="/camera/raw" value="False" /> \n \t </include> \n </launch>';
+	var res = temp.split("\n");
+	var args = {};
+	for (var i = 0; i<res.length;i++){
+		if (res[i].indexOf('<arg')!== -1){
+			var split = res[i].split(" ");
+			var arg_name = "";
+			for (var j = 0; j<split.length;j++){
+				if (split[j].indexOf('name=')!== -1){
+					arg_name = split[j].slice(6,split[j].length-1);
+				}
+				if (split[j].indexOf('value=')!== -1){
+					var arg_val = split[j].slice(7,split[j].length-1);
+					args[arg_name]= arg_val;
+					arg_name = "";
+				}
+
+			}
+		}
+	}
+	
+	var javatext="";
+	for (var key in args){
+		if (args.hasOwnProperty(key)) {
+			var getParamPos = key.indexOf(dict["Camera"]);
+			if (getParamPos !== -1){
+				var flag_name = key.slice(getParamPos + dict["Camera"].length);
+				javatext += "private boolean " + flag_name + " = " + args[key] + " \n";
+			}
+		}
+	}
+	
+	console.log(javatext);
+
+}
+function getAllIndexes(arr, val) {
+    var indexes = [], i;
+    for(i = 0; i < arr.length; i++)
+        if (arr[i] === val)
+            indexes.push(i);
+    return indexes;
+}
+//PHP or NODE.JS to r/w
+function writeTextFile(filepath, output) {
+	//sw = new StreamWriter("TestFile.txt");
+    // Add some text to the file.
+    //sw.Write("This is the ");
+	//var txtFile = new File(filepath);
+	//txtFile.open("w"); //
+	//txtFile.writeln(output);
+	//txtFile.close();
 }
 
 $(document).ready(function(){
@@ -74,6 +131,7 @@ $(document).ready(function(){
 <select id="mods" name="modules">
 	<option value="Camera">Camera</option>
 </select>
-<button id="confirm" onclick="parseToROS()">Submit</button><br>
+<br><button id="btn_ros2java" onclick="parsetoJava()">ROS to Java</button><br><br>
+<button id="btn_java2ros" onclick="parsetoROS()">Java to ROS</button>
 </body>
 </html> 
