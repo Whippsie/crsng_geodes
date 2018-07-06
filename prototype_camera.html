@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+function addRadioBool(name){
+	for (var i = 0; i< name.length ; i++){
+		var id = "radio_"+name[i];
+		$("body").append("<div id='"+id+"'>"+name[i]);
+		//Create 2 buttons for every category (T/F)
+		for (var j = 0 ; j < 2 ; j++){
+			var radioInput = document.createElement('input');
+			var text = document.createElement('label');
+			text.innerHTML = j%2 ? 'False' : 'True';
+			radioInput.setAttribute('type', 'radio');
+			radioInput.setAttribute('name', name[i]); //Category
+			radioInput.setAttribute('id', name[i]+j);
+			radioInput.setAttribute('value', text.innerHTML);
+			//document.body.appendChild(radioInput);
+			$("#"+id).append(radioInput);
+			$("#"+id).append(text);
+		}
+		$("#"+id).append("</div>");
+	}
+}
+$(document).ready(function(){
+    $.ajax({
+                    url: "classe.java",
+                    dataType: "text",
+                    success: function (data) {
+							var name = [];
+							var j = 0;
+							data = data.replace(/\n/g,'');
+							data = data.replace(/\t/g, ' ');
+                            var res = data.split(" ");
+							for (var i = 0; i<res.length;i++){
+								//Hardcoded parser cause life is hard
+								if (res[i] == "private"){
+									if (res[i+1] == "boolean"){
+										name[j] = res[i+2];
+										j++;
+									}
+								}
+							}
+							addRadioBool(name);
+							
+					}                   
+                });
+			
+});
+</script>
+</head>
+<body>
+
+</body>
+</html> 
