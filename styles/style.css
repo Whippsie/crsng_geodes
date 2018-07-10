@@ -1,4 +1,56 @@
-#div_camera{
+.div_radio{
+	height:300px;
 	float:left;
 	margin-right:35px;
+	width:120px;
+}
+
+#div_buttons{
+	clear: both;
+}
+
+button{
+	border-radius: 4px;
+	background-color: white;
+	color: black;
+    padding: 15px 32px;
+	border: 2px solid #008CBA;
+    text-align: center;
+    text-decoration: none;
+	font-size: 16px;
+	transition-duration: 0.4s;
+}
+
+button:hover{
+	background-color: #008CBA;
+	color:white;
+}
+
+.btn{
+	display:inline-block;
+	margin-right:10px;
+}
+
+h1 { 
+color: #ff8c00; 
+text-shadow: 2px 2px 2px #000000;
+font-family: 'Helvetica Neue', sans-serif; 
+font-size: 40px; 
+font-weight: bold; 
+letter-spacing: -1px; 
+line-height: 1; 
+text-align: center; 
+}
+
+h3 {
+	margin : 0 0 0 0;
+	padding : 0 0 0 0;
+
+	color : black;
+	font-weight: 900;
+	font-family: 'Helvetica Neue', sans-serif; 
+}
+
+body{
+  background: #d3d3d3;
 }
