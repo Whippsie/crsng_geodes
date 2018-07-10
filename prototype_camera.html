@@ -27,7 +27,7 @@ function rosToJava(){
 $(document).ready(function(){
 	$('#mods').change(function(){
 		var selected = jQuery(this).val();
-		//Remove next line eventually
+		//TODO: Remove next line eventually
 		if (selected == "Camera"){
 			var exist = false;
 			$('input:radio').each(function() {
@@ -36,10 +36,11 @@ $(document).ready(function(){
 				};
 			});
 			if (exist){
-				var x = document.querySelectorAll("."+selected);
+			//TODO: Remove hardcoded radio, change the name
+				var x = document.querySelectorAll(".radio");
 				for (var i = 0; i < x.length; i++) {
 					//x[i].show();
-					x[i].style.display = "inline";
+					x[i].style.display = "block";
 				}
 			}else{
 			//TODO: Vérifier si un des radio existe, si oui, juste switch la vue de none à inline
@@ -56,19 +57,20 @@ $(document).ready(function(){
 			}
 		}else{
 		//var allParas = document.getElementsByTagName('input');
-			var x = document.querySelectorAll("input, label, .radio");
+			var x = document.querySelectorAll(".radio");
 			for (var i = 0; i < x.length; i++) {
 				x[i].style.display = "none";
 				//x[i].hide();
 			}
 		}
 		});
+	$('#mods').trigger("change");
 });
 </script>
 </head>
 <body>
 <h1> Prototype - Configuration Duckietown </h1>
-<div id="div_camera">
+<div id="div_camera" class="div_radio">
 <select id="mods" name="modules">
 	<option value="Camera" selected="selected">Camera</option>
 	<option value="Navigation">Navigation</option>
@@ -79,13 +81,21 @@ $(document).ready(function(){
 	<option value="Specific flag">Specific flag</option>
 </select>
 </div>
-<div id="div_navigation">
+<div id="div_navigation" class="div_radio">
 <h3> Navigation </h3>
 </div>
-<br><button id="btn_ros2java" onclick="rosToJava()">ROS to Java</button><br><br>
-<a download="" id="downloadlinkjava" style="display: none">Download Java</a>
-<button id="btn_java2ros" onclick="parsetoROS()">Java to ROS</button>
-<a download="" id="downloadlinkros" style="display: none">Download ROS</a>
-
+<div id="div_localization" class="div_radio">
+<h3> Localization </h3>
+</div>
+<div id="div_buttons">
+	<div class="btn">
+		<button id="btn_ros2java" onclick="rosToJava()">ROS to Java</button>
+		<a download="" id="downloadlinkjava" style="display: none">Download Java</a>
+	</div>
+	<div class="btn">
+		<button id="btn_java2ros" onclick="parsetoROS()">Java to ROS</button>
+		<a download="" id="downloadlinkros" style="display: none">Download ROS</a>
+	</div>
+</div>
 </body>
 </html> 
